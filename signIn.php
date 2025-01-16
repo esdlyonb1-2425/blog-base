@@ -1,4 +1,5 @@
 <?php
+require_once 'logique/response.php';
 session_start();
 
 $username = null;
@@ -13,23 +14,9 @@ if(!empty($_POST['username']) && !empty($_POST['password'])) {
 
 if($username && $password){
 
-    ///si le username est libre, alors enregistrer le nouveau compte
-    $host ="127.0.0.1";
-    $port = "3306";
-    $database = "blog-base";
-    $dbUsername = "blog-base-user";
-    $dbPassword = "blog-base-user";
+    require_once("logique/requetes.php");
 
-    $pdo = new PDO("mysql:host=$host:$port;dbname=$database", $dbUsername, $dbPassword, [
-        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
-    ]);
-
-    $query = $pdo->prepare("SELECT * FROM users WHERE username = :username");
-    $query->execute([
-        "username"=> $username
-    ]);
-    $user = $query->fetch();
+    $user = getUserByUsername($username);
 
     if(!$user){
         header('Location: signIn.php?message=Username not found');
@@ -48,8 +35,10 @@ if($username && $password){
     $_SESSION['username'] = $user['username'];
 
 
-    header('Location: index.php?message=welcome back '.$username);
-    exit();
+
+    redirect("index", [
+            "message" => "welcome back ".$username,
+    ]);
 
 }
 

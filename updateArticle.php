@@ -1,16 +1,8 @@
 <?php
 session_start();
 
-$host ="127.0.0.1";
-$port = "3306";
-$database = "blog-base";
-$dbUsername = "blog-base-user";
-$dbPassword = "blog-base-user";
+require_once("logique/requetes.php");
 
-$pdo = new PDO("mysql:host=$host:$port;dbname=$database", $dbUsername, $dbPassword, [
-    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
-]);
 
 $id =null;
 if(!empty($_GET['id']) && ctype_digit($_GET['id'])) {
@@ -32,28 +24,22 @@ if(!empty($_POST['title']) && !empty($_POST['content'])) {
 }
 
 if($title && $content){
-    $updateQuery = $pdo->prepare(
-            "UPDATE articles SET title = :title, content = :content WHERE id = :id"
-    );
 
-    $updateQuery->execute([
+
+  $updatedArticle = [
             "title" => $title,
             "content" => $content,
             "id" => $id
-    ]);
+    ];
 
-    header('Location: article.php?id='.$id);
+    updateArticle($updatedArticle);
+
+    header('Location: article.php?id='.$updatedArticle['id']);
     exit();
 }
 
+$article = getArticle($id);
 
-
-$query = $pdo->prepare("SELECT * FROM articles WHERE id = :id");
-$query->execute([
-        "id"=> $id
-]);
-
-$article = $query->fetch();
 ?>
 
 <!doctype html>

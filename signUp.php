@@ -13,36 +13,19 @@ if(!empty($_POST['username']) && !empty($_POST['password'])) {
 
 if($username && $password){
 
-    ///si le username est libre, alors enregistrer le nouveau compte
-    $host ="127.0.0.1";
-    $port = "3306";
-    $database = "blog-base";
-    $dbUsername = "blog-base-user";
-    $dbPassword = "blog-base-user";
+    require_once("logique/requetes.php");
 
-    $pdo = new PDO("mysql:host=$host:$port;dbname=$database", $dbUsername, $dbPassword, [
-        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
-    ]);
 
-    $query = $pdo->prepare("SELECT * FROM users WHERE username = :username");
-    $query->execute([
-        "username"=> $username
-    ]);
-    $user = $query->fetch();
+    $user = getUserByUsername($username);
 
     if($user){
         header('Location: signUp.php?message=Username already taken');
         exit();
     }
 
-    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+     $newUser = ["username" => $username, "password" => $password];
+     addUser($newUser);
 
-     $query = $pdo->prepare("INSERT INTO users (username, password) VALUES (:username, :password)");
-     $query->execute([
-         "username"=> $username,
-         "password"=> $hashedPassword
-     ]);
      header('Location: index.php?message=Successfully registered');
      exit();
 }
