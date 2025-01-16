@@ -1,5 +1,4 @@
 <?php
-
 $host ="127.0.0.1";
 $port = "3306";
 $database = "blog-base";
@@ -11,10 +10,23 @@ $pdo = new PDO("mysql:host=$host:$port;dbname=$database", $username, $password, 
     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
 ]);
 
-$query = $pdo->query("SELECT * FROM articles");
-$articles = $query->fetchAll();
+$id =null;
+if(!empty($_GET['id']) && ctype_digit($_GET['id'])) {
+    $id = $_GET['id'];
+}
 
+if(!$id){
+    header('Location: index.php');
+}
+
+
+$query = $pdo->prepare("SELECT * FROM articles WHERE id = :id");
+$query->execute([
+        "id"=> $id
+]);
+$article = $query->fetch();
 ?>
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -26,20 +38,12 @@ $articles = $query->fetchAll();
 <hr>
 <a href="new-article.php">nouvel article</a>
 <hr>
-<?php foreach ($articles as $article): ?>
-
-    <hr>
-    <div class="article">
-        <h3><?= $article['title'] ?></h3>
-        <p><?= $article['content'] ?></p>
-        <a href="article.php?id=<?= $article['id'] ?>">Lire</a>
-    </div>
-    <hr>
-
-<?php endforeach; ?>
-
-
-
-
+<hr>
+<div class="article">
+    <h3><?= $article['title'] ?></h3>
+    <p><?= $article['content'] ?></p>
+    <a href="index.php">Retour</a>
+</div>
+<hr>
 </body>
 </html>
