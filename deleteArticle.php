@@ -1,27 +1,16 @@
 <?php
 session_start();
 
-require_once("logique/requetes.php");
-require_once("logique/response.php");
+require_once "src/Repository/Repository.php";
+require_once "src/Controller/UserController.php";
+require_once "src/Repository/UserRepository.php";
+
+require_once "src/Controller/ArticleController.php";
+require_once "src/Repository/ArticleRepository.php";
+require_once "core/Database/Database.php";
+require_once "core/View/View.php";
+require_once "core/Response/Response.php";
 
 
-$id =null;
-if(!empty($_GET['id']) && ctype_digit($_GET['id'])) {
-    $id = $_GET['id'];
-}
-
-if(!$id){
-    redirect();
-}
-
-$article = getArticle($id);
-
-if(!$article){
-    redirect();
-}
-
-deleteArticle($article['id']);
-
-redirect();
-
-?>
+$controller = new \Controller\ArticleController();
+$controller->delete();
