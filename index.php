@@ -1,13 +1,9 @@
 <?php
-require_once 'logique/requetes.php';
-require_once "logique/display.php";
-session_start();
+require_once "src/Controller/ArticleController.php";
+require_once "src/Repository/ArticleRepository.php";
+require_once "core/Database/Database.php";
+require_once "core/View/View.php";
 
-$articles = getArticles();
 
-render("article/index", [
-    //"pageTitle" => "Accueil",
-    "articles" => $articles
-]);
-
-?>
+$controller = new \Controller\ArticleController();
+$controller->index();
