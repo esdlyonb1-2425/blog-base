@@ -3,9 +3,15 @@
 function render(string $templateName, array $data = null)
 {
 
+    if($data){
+        extract($data);
+    }
 
-    extract($data);
 
+
+    if(!isset($pageTitle)){
+        $pageTitle = "Mon application";
+    }
     ob_start();
 
     require_once "templates/$templateName.html.php";

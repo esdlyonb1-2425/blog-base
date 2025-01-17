@@ -6,7 +6,7 @@ session_start();
 $articles = getArticles();
 
 render("article/index", [
-    "pageTitle" => "Accueil",
+    //"pageTitle" => "Accueil",
     "articles" => $articles
 ]);
 

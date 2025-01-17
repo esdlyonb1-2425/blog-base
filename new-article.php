@@ -30,7 +30,7 @@ if($title && $content)
 
        $id =  addArticle($newArticle);
 
-        redirect("article", ["id"=>$id]);
+        redirect();
     }
 
 render("article/new", [

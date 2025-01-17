@@ -2,7 +2,8 @@
 require_once 'database.php';
 function getArticles(): array
 {
-    $query = getPdo()->query("SELECT * FROM articles");
+    $query = getPdo()->prepare("SELECT * FROM articles");
+    $query->execute();
     $articles = $query->fetchAll();
     return $articles;
 }
@@ -60,7 +61,7 @@ function updateArticle($article) : int
 
 /// Users
 
-function getUserByUsername($username) : array
+function getUserByUsername($username) : array| bool
 {
     $query = getPdo()->prepare("SELECT * FROM users WHERE username = :username");
     $query->execute([
