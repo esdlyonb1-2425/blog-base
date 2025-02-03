@@ -2,25 +2,29 @@
 
 namespace App\Controller;
 
+use App\Entity\Article;
 use App\Repository\ArticleRepository;
+use Attributes\DefaultEntity;
+use Core\Controller\Controller;
 use Core\Response\Response;
-use Core\View\View;
 
-class ArticleController
+#[DefaultEntity(entityName: Article::class)]
+class ArticleController extends Controller
 {
 
-    public function index()
+    public function index():Response
     {
-        $articleRepository = new ArticleRepository();
-        $articles = $articleRepository->findAllArticles();
+       // $articleRepository = new ArticleRepository();
+                            // $this->getRepository()->findAll()
+        $articles = $this->getRepository()->findAll();
 
-        View::render('article/index', [
+        return $this->render('article/index', [
             'articles' => $articles
         ]);
 
     }
 
-    public function show()
+    public function show():Response
     {
         $id =null;
         if(!empty($_GET['id']) && ctype_digit($_GET['id'])) {
@@ -29,13 +33,13 @@ class ArticleController
 
         if(!$id){
 
-            Response::redirect();
+            return $this->redirect();
         }
 
-        $articleRepository = new ArticleRepository();
-       $article = $articleRepository->findArticle($id);
+      //  $articleRepository = new ArticleRepository();
+       $article = $this->getRepository()->find($id);
 
-        View::render('article/show', [
+       return $this->render('article/show', [
             'article' => $article
         ]);
 
@@ -49,15 +53,15 @@ class ArticleController
             $id = $_GET['id'];
         }
         if(!$id){
-            Response::redirect();
+        return $this->redirect();
         }
-        $articleRepository = new ArticleRepository();
-        $article = $articleRepository->findArticle($id);
+       // $articleRepository = new ArticleRepository();
+        $article = $this->getRepository()->find($id);
 
         if($article){
-            $articleRepository->deleteArticle($article);
+            $this->getRepository()->delete($article);
         }
-        Response::redirect();
+        return $this->redirect();
 
     }
 
@@ -84,19 +88,19 @@ class ArticleController
         if($title && $content)
         {
 
-            $newArticle = [
-                "title" => $title,
-                "content" => $content,
-                "user_id" => $_SESSION["id"]
-            ];
+            $article = new Article();
+            $article->setTitle($title);
+            $article->setContent($content);
+            $article->setUserId($_SESSION['id']);
 
-            $articleRepository = new ArticleRepository();
-            $id =  $articleRepository->addArticle($newArticle);
+        $id = $this->getRepository()->addArticle($article);
 
-            Response::redirect("article", ["id" => $id]);
+            return $this->redirect( ["type" =>"article",
+                                    "action"=>"show",
+                                "id" => $id]);
         }
 
-        View::render("article/new", [
+        return $this->render("article/new", [
             "pageTitle" => "New Article",
         ]);
     }

@@ -23,7 +23,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="new-article.php">New Article</a>
+                    <a class="nav-link" href="?type=article&action=addArticle">New Article</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="signIn.php">Sign In</a>

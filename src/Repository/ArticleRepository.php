@@ -3,47 +3,26 @@
 namespace App\Repository;
 
 
+use Attributes\TargetEntity;
 use Core\Repository\Repository;
+use App\Entity\Article;
 
+#[TargetEntity(entityName: Article::class)]
 class ArticleRepository extends Repository
 {
 
 
-    public function findAllArticles() : array
-    {
-        $query = $this->pdo->prepare("SELECT * FROM articles");
-        $query->execute();
-        $articles = $query->fetchAll();
-        return $articles;
-    }
 
-    public function findArticle(int $id)
+
+
+    public function addArticle(Article $article) : int
     {
-        $query = $this->pdo->prepare("SELECT * FROM articles WHERE id = :id");
+
+        $query = $this->pdo->prepare("INSERT INTO $this->tableName (title, content, user_id) VALUES(:title, :content, :user_id)");
         $query->execute([
-            "id"=> $id
-        ]);
-        $article = $query->fetch();
-        return $article;
-    }
-
-    public function deleteArticle(array $article) : void
-    {
-        $deleteQuery = $this->pdo->prepare("DELETE FROM articles WHERE id = :id");
-        $deleteQuery->execute([
-            "id"=> $article['id']
-        ]);
-
-    }
-
-    public function addArticle(array $article) : int
-    {
-
-        $query = $this->pdo->prepare("INSERT INTO articles (title, content, user_id) VALUES(:title, :content, :user_id)");
-        $query->execute([
-            'title' => $article['title'],
-            'content' => $article['content'],
-            'user_id' => $article['user_id']
+            'title' => $article->getTitle(),
+            'content' => $article->getContent(),
+            'user_id' => $article->getUserId(),
         ]);
 
         $id = $this->pdo->lastInsertId();

@@ -2,24 +2,38 @@
 
 namespace Core\Response;
 
+use Core\View\View;
+
 class Response
 {
-public static function redirect(string $page = null, array $urlParams = null)
-{
-    $urlEnd = "";
-
-    if($urlParams)
+public function redirect( array $urlParams = null)
     {
-        $urlEnd = "?";
-        foreach($urlParams as $paramName => $paramValue)
-        {
-            $urlEnd .= $paramName . "=" . $paramValue . "&";
-        }
-        $urlEnd = substr($urlEnd, 0, -1);
-    }
-    if(!$page){$page = "index";}
+        $urlEnd = "";
 
-    header("Location: $page.php$urlEnd");
-    exit();
+        if($urlParams)
+        {
+            $urlEnd = "?";
+            foreach($urlParams as $paramName => $paramValue)
+            {
+                $urlEnd .= $paramName . "=" . $paramValue . "&";
+            }
+            $urlEnd = substr($urlEnd, 0, -1);
+        }
+
+
+        header("Location: index.php$urlEnd");
+        //exit();
+
+        return $this;
+
+    }
+
+public function render(string $templateName, array $data)
+{
+    View::render($templateName, $data);
+
+    return $this;
+
 }
+
 }

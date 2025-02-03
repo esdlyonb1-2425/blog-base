@@ -2,19 +2,19 @@
 
 namespace App\Controller;
 
-use Core\View\View;
+use Core\Controller\Controller;
 
-class HomeController
+class HomeController extends Controller
 {
 
 
     public function coucou()
     {
-        View::render('home/coucou', []);
+        return $this->render('home/coucou', []);
     }
 
     public function accueil(   )
     {
-        View::render('home/accueil', []);
+       return $this->render('home/accueil', []);
     }
 }
