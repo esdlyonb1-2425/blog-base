@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Repository;
+namespace Core\Repository;
 
 
 
 use Core\Database\Database;
 
-class Repository
+abstract class Repository
 {
     protected \PDO $pdo;
 

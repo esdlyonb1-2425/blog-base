@@ -3,8 +3,7 @@
 namespace App\Repository;
 
 
-
-use Database\Database;
+use Core\Repository\Repository;
 
 class ArticleRepository extends Repository
 {
