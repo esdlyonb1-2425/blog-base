@@ -1,11 +1,10 @@
 <?php
 
-namespace Repository;
+namespace App\Repository;
 
 
 
-namespace Repository;
-use Database\Database;
+use Core\Database\Database;
 
 class Repository
 {

@@ -1,9 +1,11 @@
 <?php
-require_once "../src/Controller/ArticleController.php";
-require_once "../src/Repository/ArticleRepository.php";
-require_once "../core/Database/Database.php";
-require_once "../core/View/View.php";
+use Core\Kernel\Kernel;
+
+require_once "../vendor/autoload.php";
 
 
-$controller = new \Controller\ArticleController();
-$controller->index();
+
+
+
+
+Kernel::run();

@@ -2,9 +2,9 @@
 
 namespace Controller;
 
-use Repository\UserRepository;
-use Response\Response;
-use View\View;
+use App\Repository\UserRepository;
+use Core\Response\Response;
+use Core\View\View;
 
 class UserController
 {

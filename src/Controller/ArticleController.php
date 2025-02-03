@@ -1,10 +1,10 @@
 <?php
 
-namespace Controller;
+namespace App\Controller;
 
-use Repository\ArticleRepository;
-use Response\Response;
-use View\View;
+use App\Repository\ArticleRepository;
+use Core\Response\Response;
+use Core\View\View;
 
 class ArticleController
 {
@@ -66,10 +66,10 @@ class ArticleController
 
     public function addArticle()
     {
-        if(empty($_SESSION["id"])){
+    //    if(empty($_SESSION["id"])){
 
-            Response::redirect("index", ["message"=>"please log in first"]);
-        }
+      //      Response::redirect("index", ["message"=>"please log in first"]);
+     //   }
 
         $title = null;
         $content=null;
